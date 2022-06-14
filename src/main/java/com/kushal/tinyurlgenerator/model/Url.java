@@ -5,10 +5,10 @@ import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Table
+@Entity
 public class Url {
 
-    @PrimaryKey
+    @Id
     private long id;
 
     private String originalUrl;

@@ -1,8 +1,8 @@
 package com.kushal.tinyurlgenerator.service;
 
 import com.google.common.hash.Hashing;
-//import com.kushal.tinyurlgenerator.Repository.UrlRepository;
-import com.kushal.tinyurlgenerator.Repository.UrlRepositoryCassandra;
+import com.kushal.tinyurlgenerator.Repository.UrlRepository;
+//import com.kushal.tinyurlgenerator.Repository.UrlRepositoryCassandra;
 import com.kushal.tinyurlgenerator.model.Url;
 import com.kushal.tinyurlgenerator.model.UrlRequestDto;
 import org.apache.commons.lang3.StringUtils;
@@ -16,11 +16,9 @@ import java.time.LocalDateTime;
 @Component
 public class GenerateTinyUrlImpl implements iGenerateTinyUrl {
 
-//    @Autowired
-//    private UrlRepository urlRepository;
-
     @Autowired
-    private UrlRepositoryCassandra urlRepositoryCassandra;
+    private UrlRepository urlRepository;
+
 
     @Override
     public Url convertToShortUrl(UrlRequestDto request) {
@@ -55,7 +53,7 @@ public class GenerateTinyUrlImpl implements iGenerateTinyUrl {
     }
 
     private Url persistShortUrl(Url urlToPersist) {
-        return urlRepositoryCassandra.save(urlToPersist);
+        return urlRepository.save(urlToPersist);
     }
 
     private void setValuesForPersistUrl(Url url, UrlRequestDto request, String finalUrl) {
@@ -84,7 +82,7 @@ public class GenerateTinyUrlImpl implements iGenerateTinyUrl {
 
     private boolean checkIfCustomUrlAlreadyExists(String tinyUrl)
     {
-        Url urlResp = urlRepositoryCassandra.findByShortLink(tinyUrl);
+        Url urlResp = urlRepository.findByShortLink(tinyUrl);
         if(urlResp != null)
             return true;
         else
