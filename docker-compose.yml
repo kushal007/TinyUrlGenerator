@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  myapp-main:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: kushal
+    ports:
+      - 8080:8080

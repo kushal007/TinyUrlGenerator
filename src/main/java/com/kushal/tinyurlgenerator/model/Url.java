@@ -1,6 +1,5 @@
 package com.kushal.tinyurlgenerator.model;
 
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
