@@ -5,6 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: dockerfile
+    image: kushal
     ports:
       - 8080:8080
