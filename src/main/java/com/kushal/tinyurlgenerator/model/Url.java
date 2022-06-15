@@ -1,6 +1,5 @@
 package com.kushal.tinyurlgenerator.model;
 
-import org.springframework.data.cassandra.core.mapping.PrimaryKey;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
