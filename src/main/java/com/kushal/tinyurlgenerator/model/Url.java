@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class Url {
 
     @Id
+    @GeneratedValue
     private long id;
 
     private String originalUrl;

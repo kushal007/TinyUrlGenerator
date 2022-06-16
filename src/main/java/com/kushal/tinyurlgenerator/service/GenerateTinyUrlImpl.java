@@ -2,7 +2,6 @@ package com.kushal.tinyurlgenerator.service;
 
 import com.google.common.hash.Hashing;
 import com.kushal.tinyurlgenerator.Repository.UrlRepository;
-//import com.kushal.tinyurlgenerator.Repository.UrlRepositoryCassandra;
 import com.kushal.tinyurlgenerator.model.Url;
 import com.kushal.tinyurlgenerator.model.UrlRequestDto;
 import org.apache.commons.lang3.StringUtils;
@@ -24,6 +23,14 @@ public class GenerateTinyUrlImpl implements iGenerateTinyUrl {
     public Url convertToShortUrl(UrlRequestDto request) {
         String tinyUrl = "";
         String localhostString = "localhost:8080/";
+        if(request.getUrl() == "" || request.getUrl() == null)
+        {
+            Url url = new Url();
+            url.setId(420);
+            url.setShortLink(null);
+            url.setOriginalUrl(null);
+            return url;
+        }
         if(StringUtils.isNotEmpty(request.getUrl()))
         {
             if(StringUtils.isBlank(request.getCustomTinyUrl()))
@@ -35,7 +42,9 @@ public class GenerateTinyUrlImpl implements iGenerateTinyUrl {
                 if(checkIfCustomUrlAlreadyExists(localhostString.concat(request.getCustomTinyUrl())))
                 {
                     System.out.println("Url already exists");
-                    return null;
+                    Url url =  new Url();
+                    url.setId(-1);
+                    return url;
                 }
                 else
                 {
@@ -93,6 +102,7 @@ public class GenerateTinyUrlImpl implements iGenerateTinyUrl {
     private String encodeUrl(String url) {
         String tinyUrl = "";
         LocalDateTime currentTime = LocalDateTime.now();
+        System.out.println("value of key in decoded form: "+ url.concat(currentTime.toString()));
         tinyUrl = Hashing.murmur3_32()
                 .hashString(url.concat(currentTime.toString()), StandardCharsets.UTF_8)
                 .toString();

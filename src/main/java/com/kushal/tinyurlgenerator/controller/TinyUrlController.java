@@ -43,23 +43,32 @@ public class TinyUrlController {
         Url urlResp = generateTinyUrl.convertToShortUrl(request);
         if(urlResp!= null )
         {
+            if(urlResp.getId() == -1)
+            {
+                UrlErrorResponseDto urlErrorResponseDto = new UrlErrorResponseDto();
+                urlErrorResponseDto.setError("The custom url already in use, Fret not my fren use different url");
+                urlErrorResponseDto.setStatus("420 xD");
+                return new ResponseEntity<UrlErrorResponseDto>(urlErrorResponseDto, HttpStatus.ALREADY_REPORTED);
+            }
+
+            if(urlResp.getOriginalUrl() == null && urlResp.getShortLink() == null && urlResp.getId() == 420)
+            {
+                UrlErrorResponseDto urlErrorResponseDto = new UrlErrorResponseDto();
+                urlErrorResponseDto.setError("Please enter a valid URL");
+                urlErrorResponseDto.setStatus("420");
+                return new ResponseEntity<UrlErrorResponseDto>(urlErrorResponseDto,HttpStatus.BAD_REQUEST);
+            }
             UrlResponseDto urlResponseDto = new UrlResponseDto();
             urlResponseDto.setExpirationDate(urlResp.getExpirationDate());
             urlResponseDto.setOriginalLink(urlResp.getOriginalUrl());
             urlResponseDto.setShortLink(urlResp.getShortLink());
             return new ResponseEntity<UrlResponseDto>(urlResponseDto, HttpStatus.OK);
         }
-        if(urlResp == null)
-        {
-            UrlErrorResponseDto urlErrorResponseDto = new UrlErrorResponseDto();
-            urlErrorResponseDto.setError("The custom url already , Fret not my fren");
-            urlErrorResponseDto.setStatus("420 xD");
-            return new ResponseEntity<UrlErrorResponseDto>(urlErrorResponseDto, HttpStatus.OK);
-        }
+
         UrlErrorResponseDto urlErrorResponseDto = new UrlErrorResponseDto();
         urlErrorResponseDto.setError("I am sorry my friend, the url generation was not possible but fret not my friend. Try it again.");
         urlErrorResponseDto.setStatus("404");
-        return new ResponseEntity<UrlErrorResponseDto>(urlErrorResponseDto,HttpStatus.OK);
+        return new ResponseEntity<UrlErrorResponseDto>(urlErrorResponseDto,HttpStatus.SERVICE_UNAVAILABLE);
     }
 
     @GetMapping("/val")
